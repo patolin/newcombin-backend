@@ -9,8 +9,11 @@ from .models import Payables, Transaction
 
 
 class PayablesViews(APIView):
-    def get(self, request, status="pending"):
-        payables=Payables.objects.filter(status_pago=status)
+    def get(self, request, status="pending", servicio=None):
+        if servicio:
+            payables=Payables.objects.filter(status_pago=status, tipo_servicio=servicio)
+        else:
+            payables=Payables.objects.filter(status_pago=status)
         serializer=PayablesSerializer(payables, many=True)
         return Response(serializer.data, 200)
 
