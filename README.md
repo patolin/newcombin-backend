@@ -18,15 +18,20 @@ Para facilidad de ejecución el ejemplo, se usará SQLite como base de datos
 - Instalar las dependencias con el comando pip usando el archivo requirements.txt provisto
 
     cd newcombin-backend
+
     pip install -r requirements.txt
 
 - Ingresar a la carpeta del código del repositorio
 
-    cd ../api-pagos
+    cd api-pagos
 
-- Iniciar el servidor web de Djando
+- Crear la estructura de la base de datos
 
-    python manage.py runserver
+    python manage.py migrate
+
+- Iniciar el servidor web de Django en el puerto 8000
+
+    python manage.py runserver 0.0.0.0:8000
 
 
 # API
