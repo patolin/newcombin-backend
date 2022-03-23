@@ -31,8 +31,21 @@ class TransactionViews(APIView):
             transactions=Transaction.objects.filter(fecha_pago__gte=start_date, fecha_pago__lte=end_date)
         else:
             transactions=Transaction.objects.all()
-        serializer=TransactionSerializer(transactions, many=True)
-        return Response(serializer.data, 200)
+
+        reporte={}
+        for transaction in transactions:
+            fecha_pago=transaction.fecha_pago.strftime('%Y-%m-%d')
+            if fecha_pago not in reporte:
+                
+                reporte[fecha_pago]={"importe_acumulado":transaction.importe_pago, "total_transacciones":1}
+            else:
+                reporte[fecha_pago]["importe_acumulado"]+=transaction.importe_pago
+                reporte[fecha_pago]["total_transacciones"]+=1
+
+            
+        #serializer=TransactionSerializer(transaction, many=True)
+        print(reporte)
+        return Response(reporte, 200)
 
 
     def post(self, request):
