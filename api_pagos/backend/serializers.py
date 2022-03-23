@@ -15,6 +15,17 @@ class PayablesSerializer(serializers.ModelSerializer):
         model = Payables
         fields = ('__all__')
 
+class PayablesServiceSerializer(serializers.ModelSerializer):
+    
+    descripcion_servicio=serializers.CharField(max_length=255)
+    fecha_vencimiento=serializers.DateField(default=datetime.now)
+    importe_servicio=serializers.FloatField()
+    status_pago=serializers.CharField(max_length=25)
+
+    class Meta:
+        model = Payables
+        fields = ('descripcion_servicio', 'fecha_vencimiento', 'importe_servicio', 'status_pago')
+
 class TransactionSerializer(serializers.ModelSerializer):
     
     codigo_barra=serializers.CharField(max_length=25) #PayablesSerializer(required=True) #

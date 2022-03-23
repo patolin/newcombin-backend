@@ -4,17 +4,19 @@ from django.db.models import Count, Sum
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import PayablesSerializer, TransactionSerializer
+from .serializers import PayablesSerializer, TransactionSerializer, PayablesServiceSerializer
 from .models import Payables, Transaction
 
 
 class PayablesViews(APIView):
     def get(self, request, status="pending", servicio=None):
+        serializer=None
         if servicio:
             payables=Payables.objects.filter(status_pago=status, tipo_servicio=servicio)
+            serializer=PayablesServiceSerializer(payables, many=True)
         else:
             payables=Payables.objects.filter(status_pago=status)
-        serializer=PayablesSerializer(payables, many=True)
+            serializer=PayablesSerializer(payables, many=True)
         return Response(serializer.data, 200)
 
     def post(self, request):
